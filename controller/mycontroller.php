@@ -12,18 +12,23 @@ class MyController extends Controller
 		
 	}
 
-	public function abc($id)
+	public function login($id)
 	{
-		echo $id;
+		print(render('login.html'));
 	}
 
-	public function edf($id)
+	public function home($id)
 	{
-		echo $id.'edf';
+		print(render('index.html'));
 	}
 
-	public function cde($id)
+	public function about($id)
 	{
-		echo $id.'cde';
+		echo 'this is about';
+	}
+
+	public function contact($id)
+	{
+		echo 'this is contact';
 	}
 }

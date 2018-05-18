@@ -10,6 +10,7 @@ class Router {
 	private $_uri = [];
 	private $instance;
 	private $path;
+	private $end_points = [];
 
 	public function __construct()
 	{
@@ -18,20 +19,21 @@ class Router {
 
 	public function get($path, $controller) 
 	{	
-		$this->path = trim($_SERVER['PATH_INFO'], '/');
-		$_path = explode('/', $this->path);
+		$patch = '';
+		$this->end_points[] = $path;
+		$this->path  = trim($_SERVER['PATH_INFO'], '/');
+		$_path 		 = explode('/', $this->path);
 		$_controller = explode('@', $controller)[0];
+		$_endpath 	 = explode('/', $this->path);
 
 		$patch = $_path[count($_path) - 1];
-
-		if (isset($patch[1])) {
-			$this->routes[$path] = [
-				'method' 	 => 'GET',
-				'controller' => $_controller,
-				'attr' 	 	 => explode('@', $controller)[1],
-				'patch' 	 => $patch
-			];
-		}
+		
+		$this->routes[$path] = [
+			'method' 	 => 'GET',
+			'controller' => $_controller,
+			'attr' 	 	 => explode('@', $controller)[1],
+			'patch' 	 => isset($patch[1]) ? $patch : ''
+		];
 	}
 
 	public function boot()
@@ -44,23 +46,20 @@ class Router {
 		}
 
 		$current_uri = explode('/', $this->_uri[0]);
-		unset($current_uri[count($current_uri) - 1]);
-
-		$current_uri = implode('/', $current_uri);
-
-		$_endpoints = [];
+		//$current_uri = implode('/', $current_uri);
+		
+		$_endpoints = $new_end = [];
 		foreach ($this->routes as $key => $route) {
 			$_endpoints[] = $key;
 		}
+		$uri = array_intersect(explode('/', $this->_uri[0]), $this->end_points);
+		$patch 	= explode('/', $this->_uri[0]);
 
-		if (in_array($current_uri, $_endpoints)) {
-			$this->instance = (object) $this->routes[$current_uri];
-			$patch 	= $this->instance->patch;
-			if (isset($patch)) {
-				$cont 	= new $this->instance->controller;
-				$func 	= $this->instance->attr;
-				$cont->$func($patch);
-			}
+		if (count($uri) > 0) {
+			$this->instance = (object) $this->routes[$uri[0]];
+			$cont 	= new $this->instance->controller;
+			$func 	= $this->instance->attr;
+			$cont->$func($patch[count($patch) - 1]);
 		} else {
 			echo '404 not found.';
 		}
