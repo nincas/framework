@@ -1,4 +1,6 @@
 <?php
 
-$route->get('/sample', 'MyController@feeds');
+$route->get('home', 'Framework\Controllers\MyController@abc');
+
+
 

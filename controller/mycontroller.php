@@ -7,8 +7,23 @@ use Framework\Kernel\Controller;
 
 class MyController extends Controller
 {
-	public function output()
+	public function __construct()
 	{
-		echo 'hello im your controller!';
+		
+	}
+
+	public function abc($id)
+	{
+		echo $id . 'abc';
+	}
+
+	public function edf($id)
+	{
+		echo $id.'edf';
+	}
+
+	public function cde($id)
+	{
+		echo $id.'cde';
 	}
 }
