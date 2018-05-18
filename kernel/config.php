@@ -46,6 +46,6 @@ Class Config
     {
         $route = new Router;
         require_once dirname(__DIR__).'/routes.php';
-        $route->start();
+        $route->boot();
     }
 }

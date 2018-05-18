@@ -7,8 +7,28 @@ use Framework\Kernel\Controller;
 
 class MyController extends Controller
 {
-	public function output()
+	public function __construct()
 	{
-		echo 'hello im your controller!';
+		
+	}
+
+	public function login($id)
+	{
+		print(render('login.html'));
+	}
+
+	public function home($id)
+	{
+		print(render('index.html'));
+	}
+
+	public function about($id)
+	{
+		echo 'this is about';
+	}
+
+	public function contact($id)
+	{
+		echo 'this is contact';
 	}
 }
