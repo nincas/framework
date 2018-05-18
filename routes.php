@@ -1,6 +1,6 @@
 <?php
 
-$route->get('home', 'Framework\Controllers\MyController@abc');
+$route->get('login/home', 'Framework\Controllers\MyController@abc');
 
 
 

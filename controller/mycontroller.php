@@ -14,7 +14,7 @@ class MyController extends Controller
 
 	public function abc($id)
 	{
-		echo $id . 'abc';
+		echo $id;
 	}
 
 	public function edf($id)
