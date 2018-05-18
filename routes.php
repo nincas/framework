@@ -1,5 +1,11 @@
 <?php
 
+/*
+* Routes (for now get function. :) )
+*
+*
+*/
+
 $route->get('login', 'Framework\Controllers\MyController@login');
 $route->get('about', 'Framework\Controllers\MyController@about');
 $route->get('home', 'Framework\Controllers\MyController@home');
