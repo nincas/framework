@@ -1,6 +1,5 @@
 <?php
 
 require_once dirname(__DIR__).'/vendor/autoload.php';
-$run = new Framework\Kernel\Config;
-
-$run->run();
+$app = new Framework\Kernel\Config;
+$app->run();
