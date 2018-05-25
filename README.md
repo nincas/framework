@@ -7,5 +7,6 @@ Custom Framework
 ## Packages
 - Eloquent ORM 
 - PSR-4
+- Dotenv
 ---
  #### by [me](nincas21@gmail.com)
