@@ -10,5 +10,4 @@ Custom Framework
  - easy and fast database query using Eloquent ORM
  - latest PSR-4 autoloading
  ---
- 
-[@nincas21@gmail.com]
+ ####by [me](nincas21@gmail.com)
