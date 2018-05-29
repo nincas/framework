@@ -3,6 +3,7 @@
 namespace Framework\Kernel;
 
 use Illuminate\Http\Request;
+use \Exception;
 
 class Router {
 
@@ -21,7 +22,7 @@ class Router {
 	{	
 		$patch = '';
 		$this->end_points[] = $path;
-		$this->path  = trim($_SERVER['PATH_INFO'], '/');
+		$this->path  = @(trim($_SERVER['PATH_INFO'], '/')) ? trim($_SERVER['PATH_INFO'], '/') : null;
 		$_path 		 = explode('/', $this->path);
 		$_controller = explode('@', $controller)[0];
 		$_endpath 	 = explode('/', $this->path);
@@ -32,36 +33,40 @@ class Router {
 			'method' 	 => 'GET',
 			'controller' => $_controller,
 			'attr' 	 	 => explode('@', $controller)[1],
-			'patch' 	 => isset($patch[1]) ? $patch : ''
+			'patch' 	 => isset($patch) ? $patch : ''
 		];
+
 	}
 
 	public function boot()
 	{
-		$this->_uri[] = trim($_SERVER['PATH_INFO'], '/');
-		foreach ($this->_uri as $keyy => $value) {
-			if (in_array($value, $this->routes)) {
-
-			}
-		}
-
+		$this->_uri[] = @(trim($_SERVER['PATH_INFO'], '/')) ? trim($_SERVER['PATH_INFO'], '/') : null;
 		$current_uri = explode('/', $this->_uri[0]);
-		//$current_uri = implode('/', $current_uri);
 		
 		$_endpoints = $new_end = [];
 		foreach ($this->routes as $key => $route) {
 			$_endpoints[] = $key;
 		}
-		$uri = array_intersect(explode('/', $this->_uri[0]), $this->end_points);
-		$patch 	= explode('/', $this->_uri[0]);
 
-		if (count($uri) > 0) {
-			$this->instance = (object) $this->routes[$uri[0]];
-			$cont 	= new $this->instance->controller;
-			$func 	= $this->instance->attr;
-			$cont->$func($patch[count($patch) - 1]);
-		} else {
-			echo '404 not found.';
+		if ($this->_uri[0] == null) $this->_uri[0] = '/';
+		
+		/**
+		* Error Handling
+		*/
+		try {
+			if (count($this->_uri) > 0 && in_array($this->_uri[0], $_endpoints)) {
+				/**
+				* instantiate controller
+				*/
+				$this->instance = (object) $this->routes[$this->_uri[0]];
+				$cont 	= new $this->instance->controller;
+				$func 	= $this->instance->attr;
+				$cont->$func($this->instance->patch);
+			} else {
+				throw new Exception("Page/URL not found.");
+			}
+		} catch(Exception $e) {
+			print($e->getMessage());
 		}
 	}
 }
