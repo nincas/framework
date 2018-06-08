@@ -1,9 +1,7 @@
 <?php
 
-/*
-* Routes (for now get function. :) )
-*
-*
+/**
+* @author onin
 */
 
 $route->get('login', 'Framework\Controllers\MyController@login');
