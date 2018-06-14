@@ -7,6 +7,7 @@ use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Framework\Kernel\Router;
+use \Exception;
 
 use Illuminate\Database\Capsule\Manager as DB;
 
@@ -17,7 +18,7 @@ use Framework\Models\Users;
 Class Config
 {
     /**
-     * summary
+     * @author onin
      */
     public function __construct()
     {
@@ -25,21 +26,25 @@ Class Config
         (new Dotenv)->load($env);
         date_default_timezone_set(getenv('TIMEZONE'));
 
-        $db = new Manager;
-        $db->addConnection([
-            'driver'    => getenv('DB_DRIVER'),
-            'host'      => getenv('DB_HOST'),
-            'database'  => getenv('DB_NAME'),
-            'username'  => getenv('DB_USER'),
-            'password'  => getenv('DB_PASS'),
-            'charset'   => getenv('DB_CHARSET'),
-            'collation' => getenv('DB_COLLATION'),
-            'prefix'    => getenv('DB_PREFIX')
-        ]);
+        try {
+            $db = new Manager;
+            $db->addConnection([
+                'driver'    => getenv('DB_DRIVER'),
+                'host'      => getenv('DB_HOST'),
+                'database'  => getenv('DB_NAME'),
+                'username'  => getenv('DB_USER'),
+                'password'  => getenv('DB_PASS'),
+                'charset'   => getenv('DB_CHARSET'),
+                'collation' => getenv('DB_COLLATION'),
+                'prefix'    => getenv('DB_PREFIX')
+            ]);
 
-        $db->setEventDispatcher(new Dispatcher(new Container));
-        $db->setAsGlobal();
-        $db->bootEloquent();
+            $db->setEventDispatcher(new Dispatcher(new Container));
+            $db->setAsGlobal();
+            $db->bootEloquent();
+        } catch (Exception $e) {
+            print($e->getMessage());
+        }
     }
 
     public function run()

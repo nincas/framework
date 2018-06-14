@@ -9,5 +9,5 @@ function sayHello($name = "")
 
 function render($filename) {
 	$html = file_get_contents(dirname(__DIR__).'/templates/'.$filename);
-	return $html;
+	return print($html);
 }
